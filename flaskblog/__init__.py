@@ -1,4 +1,4 @@
-# Archivo necesario para que flaskblog se comporte como un paquete
+# Archivo necesario para que flaskblog se comporte como un paquete1
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
