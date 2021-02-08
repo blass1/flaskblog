@@ -26,7 +26,7 @@ def home():
 # Puede tener 2 decoradores route e ir la misma pagina
 @app.route('/about')
 def about():
-	return render_template('about.html', title='About TITULO')
+	return render_template('about.html', title='Simplemente nosotros')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -46,7 +46,7 @@ def register():
 		#'success' es la clase de boostrap
 		flash(f'Tu cuenta ha sido creada con exito. Ahora puedes iniciar sesion', 'success')
 		return redirect(url_for('login'))
-	return render_template('register.html', title='Registro', form=form)
+	return render_template('register.html', title='Registro Blog de Blas', form=form)
 
 # Con estos metodos envio informacion de la db a un form 
 @app.route('/login', methods=['GET', 'POST'])
@@ -69,7 +69,7 @@ def login():
 			return redirect(next_page) if next_page else redirect(url_for('home'))	
 		else:
 			flash('Login incorrecto. Revisa tu email y password e intenta nuevamente', 'danger')
-	return render_template('login.html', title='Login', form=form)
+	return render_template('login.html', title='Ingresa a la plataforma', form=form)
 
 
 @app.route('/logout')
