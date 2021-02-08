@@ -18,7 +18,8 @@ class User(db.Model, UserMixin):
 	posts = db.relationship('Post', backref=db.backref('author', lazy=True)) # o lazy dynamic
 
 	def __repr__(self):
-		return f"Usuario: '{self.username} ({self.lastName}, {self.firstName})', '{self.email}', '{self.image_file}')"
+		#return f"Usuario: '{self.username} ({self.lastName}, {self.firstName})', '{self.email}', '{self.image_file}')"
+		return f"Usuario: '{self.username})', '{self.email}', '{self.image_file}')"
 
 
 class Post(db.Model):
