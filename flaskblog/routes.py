@@ -181,15 +181,13 @@ def delete_post(post_id):
 	return redirect(url_for('home'))
 
 
-@app.route("user/<str:username>")
+@app.route("/user/<string:username>")
 def user_posts(username):
 	# Utilizo la pagina enviada por get
 	page = request.args.get('page', 1, type=int)
 	# Busco el usuario o tiro un error 404
 	user = User.query.filter_by(username=username).first_or_404()
 	# Almaceno la query con los posts del usuario, con \ sigo abajo
-	posts = Post.query.filter_by(author=username)\
-		.order_by(Post.date_posted.desc())\
-		.paginate(page=page, per_page=5)
+	posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
 	# Le envio el html y el contido del posts
 	return render_template('user_posts.html', posts=posts, user=user)
