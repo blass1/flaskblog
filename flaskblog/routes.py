@@ -15,7 +15,10 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route('/')
 @app.route('/home')
 def home():
-	posts = Post.query.all()
+	#posts = Post.query.all()
+	# Con este metodo de request "get" traemos el valor "page" que por defecto ponemos que sea 1 y nos aseguramos que sea int
+	page = request.args.get('page', 1, type=int)
+	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
 	# Le envio el html y el contido del posts
 	return render_template('home.html', posts=posts)
 
@@ -176,3 +179,17 @@ def delete_post(post_id):
 	db.session.commit()
 	flash('Tu post fue borrado!', 'danger')
 	return redirect(url_for('home'))
+
+
+@app.route("user/<str:username>")
+def user_posts(username):
+	# Utilizo la pagina enviada por get
+	page = request.args.get('page', 1, type=int)
+	# Busco el usuario o tiro un error 404
+	user = User.query.filter_by(username=username).first_or_404()
+	# Almaceno la query con los posts del usuario, con \ sigo abajo
+	posts = Post.query.filter_by(author=username)\
+		.order_by(Post.date_posted.desc())\
+		.paginate(page=page, per_page=5)
+	# Le envio el html y el contido del posts
+	return render_template('user_posts.html', posts=posts, user=user)
