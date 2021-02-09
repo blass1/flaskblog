@@ -6,7 +6,8 @@ from PIL import Image
 # URL_FOR se ocupa de la lectura de los statics, flash es para la validacion del submit
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm, 
+							RequestResetForm, ResetPasswordForm)
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -51,7 +52,7 @@ def register():
 # Con estos metodos envio informacion de la db a un form 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	# Utilizo otra funcion de flask_login que verifica si hay un usuario logueado
+	# Utilizo otra funcion de flask_login que verifica si hay un usuario logueado lo mando al home
 	if current_user.is_authenticated:
 		return redirect(url_for('home'))
 	form = LoginForm()
@@ -191,3 +192,35 @@ def user_posts(username):
 	posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
 	# Le envio el html y el contido del posts
 	return render_template('user_posts.html', posts=posts, user=user)
+
+
+# Metodo para envio de email con instrucciones de reseteo
+def send_reset_email(user):
+	pass
+
+
+# Reseteo de password, si esta logeado vuelve al home, sino carga el form del reseteo
+@app.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
+	form = RequestResetForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+		send_reset_email(user)
+		flash('Un email fue enviado a tu direccion de correo con el instructivo de como resetear tu password', 'info')
+		return redirect(url_for('login'))
+	return render_template('reset_request.html', title='Resetea tu password', form=form)
+
+
+# Verificacion del token a travez de la url
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
+	user = User.verify_reset_token(token)
+	if user is None:
+		flash('Token invalido o expirado', 'warning')
+		return redirect(url_for('reset_request'))
+	form = ResetPasswordForm()
+	return render_template('reset_token.html', title='Resetea tu password', form=form)

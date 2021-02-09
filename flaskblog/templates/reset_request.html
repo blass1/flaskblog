@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+	
+	<div class="content-section">
+		<form method="POST" action="">
+			{{ form.hidden_tag() }}
+			<fieldset class="form">
+				<legend class="border-botton mt-4 mb-4">Resetea el password de tu cuenta</legend>
+
+				<div class="form-group">
+					{{ form.email.label(class="form-control-label") }}
+					
+					{% if form.email.errors %}
+						{{ form.email(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.email.errors %}
+								<span>
+									{{ error }}
+								</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.email (class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</fieldset>
+			<div class="form-group">
+					{{ form.submit(class="btn btn-outline-info mt-3 mb-3") }}
+			</div>
+		</form>
+	</div>
+{% endblock content %}

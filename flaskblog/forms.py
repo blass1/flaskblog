@@ -36,6 +36,8 @@ class LoginForm(FlaskForm):
 	remember = BooleanField('Recuérdame')
 	submit = SubmitField('Ingresar Ahora')
 
+
+# Formulario de la actualizacion del perfil
 class UpdateAccountForm(FlaskForm):
 	username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
 	email = StringField('Correo Electronico (E-mail)', validators=[DataRequired(), Email()])
@@ -57,7 +59,26 @@ class UpdateAccountForm(FlaskForm):
 			if user:
 				raise ValidationError("Ese correo electronico ya posee una cuenta en nuestro sistema, pruebe con otro.")
 
+# Creacion de un post nuevo
 class PostForm(FlaskForm):
 	title = StringField('Titulo', validators=[DataRequired()])
 	content = TextAreaField('Contenido', validators=[DataRequired()])
 	submit = SubmitField('Postear')
+
+
+# Form de la pagina de solicitud de reseteo de la password
+class RequestResetForm(FlaskForm):
+	email = StringField('Correo Electronico (E-mail)', validators=[DataRequired(), Email()])
+	submit = SubmitField('Resetear password')
+
+	# Validacion similar al username pero con el email
+	def validate_email(self, email):
+		user = User.query.filter_by(email=email.data).first()
+		if user is None:
+			raise ValidationError("No existe una cuenta con ese email")
+
+# Form de reseteo de password
+class ResetPasswordForm(FlaskForm):
+	password = PasswordField('Contraseña', validators=[DataRequired()])
+	confirmPassword = PasswordField('Confirmar Contraseña', validators=[DataRequired(), EqualTo('password')])
+	submit = SubmitField('Cambiar password')
