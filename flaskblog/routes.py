@@ -5,12 +5,13 @@ import secrets
 from PIL import Image
 # URL_FOR se ocupa de la lectura de los statics, flash es para la validacion del submit
 from flask import render_template, url_for, flash, redirect, request, abort
-from flaskblog import app, db, bcrypt
+# Importo todo lo que se inicializo en el init
+from flaskblog import app, db, bcrypt, mail
 from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm, 
 							RequestResetForm, ResetPasswordForm)
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
-
+from flask_mail import Message
 
 # Con route manejamos las urls
 @app.route('/')
@@ -196,8 +197,14 @@ def user_posts(username):
 
 # Metodo para envio de email con instrucciones de reseteo
 def send_reset_email(user):
-	pass
-
+	token = user.get_reset_token()
+	# Con _external le indicamos que es un domio full y no relativo a la aplicacion
+	msg = Message('Solicitud para restablecer password', sender="demo@gmail.com", recipients=[user.email])
+	msg.body = f'''
+	Para restaurar tu password, ingresa al siguiente link: {url_for('reset_token', token=token, _external=True)}
+	Si no solicitaste la restauracion de tu password simplemente ignora este mensaje y ningun cambio se realizada en el sistema.
+	'''
+	mail.send(msg)
 
 # Reseteo de password, si esta logeado vuelve al home, sino carga el form del reseteo
 @app.route("/reset_password", methods=['GET', 'POST'])
@@ -223,4 +230,11 @@ def reset_token(token):
 		flash('Token invalido o expirado', 'warning')
 		return redirect(url_for('reset_request'))
 	form = ResetPasswordForm()
+	if form.validate_on_submit():
+		# Hasheamos el pass que el usuario pone en el campo password del formulario
+		hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+		user.password = hashed_password
+		db.session.commit()
+		flash(f'Tu password se ha cambiado con exito. Ahora puedes iniciar sesion', 'success')
+		return redirect(url_for('login'))
 	return render_template('reset_token.html', title='Resetea tu password', form=form)

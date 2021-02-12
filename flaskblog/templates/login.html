@@ -45,11 +45,11 @@
 				</div>
 			</fieldset>
 			<div class="form-group">
-					{{ form.submit(class="btn btn-outline-info mt-3 mb-3") }}
+				{{ form.submit(class="btn btn-outline-info") }}
+				<small class="text-muted ml-2">
+					<a href="{{ url_for('reset_request') }}">Olvidaste tu password?</a>
+				</small>
 			</div>
-			<small class="text-muted ml-2">
-				<a href="#">Olvidaste tu password?</a>
-			</small>
 		</form>
 	</div>
 
