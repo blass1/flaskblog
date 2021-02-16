@@ -1,6 +1,7 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flaskblog import db, login_manager, app
+from flask import current_app
+from flaskblog import db, login_manager
 from flask_login import UserMixin
 
 # Uso el decorador y le asigno el cargador de usuarios 
@@ -21,7 +22,7 @@ class User(db.Model, UserMixin):
 	# Metodo para crear el token utilizando TimedJSONWebSignatureSerializer con un tiempo de 30 minutos(1800 segs)
 	def get_reset_token(self, expires_sec=1800):
 		# Creo una instancia del serializador utilizando la secret key de la aplicacion
-		s = Serializer(app.config['SECRET_KEY'])
+		s = Serializer(current_app.config['SECRET_KEY'])
 		# Creo el token con vencimiento pasandole por un diccionario el id del usuario (payload) y lo transformo de bits a utf-8
 		return s.dumps({'user_id': self.id}).decode('utf-8')
 	
@@ -30,7 +31,7 @@ class User(db.Model, UserMixin):
 	@staticmethod
 	def verify_reset_token(token):
 		# Creo un serializador con el secret key de la app
-		s = Serializer(app.config['SECRET_KEY'])
+		s = Serializer(current_app.config['SECRET_KEY'])
 		# Pruebo abrir el token y le pido el user_id del diccionario que se le paso cuando se creo el token  
 		# Utilizo un try catch
 		try:

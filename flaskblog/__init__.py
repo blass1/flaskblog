@@ -1,35 +1,47 @@
-import os
-# Archivo necesario para que flaskblog se comporte como un paquete1
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from flaskblog.config import Config
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'a55c2258a11f94546c36492fde583725'
-# Path de la BD,/// significa que es el relative path, de esta manera la busca en el directorio del proyecto
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-# Instanciamos la base de datos de sqlalchemy
-db = SQLAlchemy(app)
-# Instalnciamos el encypter y le asignamos la app
-bcrypt = Bcrypt(app)
-# Vinculamos la libreria flask login a la app
-login_manager = LoginManager(app)
-# Tiene que ver con el login_required
-login_manager.login_view = 'login'
+# Instanciamos la base de datos de sqlalchemy y la vinculamos a la app
+db = SQLAlchemy()
+# Instanciamos el encypter y la vinculamos a la app
+bcrypt = Bcrypt()
+# Libreria flask login
+login_manager = LoginManager()
+# Cuando se le solicita el "login" se redicciona al blueprint de usuarios
+login_manager.login_view = 'users.login'
 # Con esto le mandamos un colorcito azul al boostrap como senial visual que ingreso
 login_manager.login_message_category = 'info'
 
-# Configuracion de Flask Mail con Gmail
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-# Para las credenciales del email utilizo variables de entorno
-app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
-app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
+mail = Mail()
 
-mail = Mail(app)
+# Cuando no usamos blueprints importabamos las rutas de aca
+#from flaskblog import routes
 
-from flaskblog import routes
+# Con este patron de diseno en donde las extensiones se instancian primero y luego la app
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    # Le seteamos la configuracion a la apliacaion de nuestro archivo config.py
+    app.config.from_object(Config)
     
+    db.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+
+    # Importo el blueprint de users, posts y del main
+    from flaskblog.users.routes import users
+    from flaskblog.posts.routes import posts
+    from flaskblog.main.routes import main
+    from flaskblog.errors.handlers import errors
+
+    # Se agregan los blueprints a la app
+    app.register_blueprint(users)
+    app.register_blueprint(posts)
+    app.register_blueprint(main)
+    app.register_blueprint(errors)
+
+    return app

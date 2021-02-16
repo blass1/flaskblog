@@ -1,9 +1,8 @@
-# Desde este archivo vamos a manejar los formularios de la aplicacion
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
-from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
 from flaskblog.models import User
 
 class RegistrationForm(FlaskForm):
@@ -58,13 +57,6 @@ class UpdateAccountForm(FlaskForm):
 			user = User.query.filter_by(email=email.data).first()
 			if user:
 				raise ValidationError("Ese correo electronico ya posee una cuenta en nuestro sistema, pruebe con otro.")
-
-# Creacion de un post nuevo
-class PostForm(FlaskForm):
-	title = StringField('Titulo', validators=[DataRequired()])
-	content = TextAreaField('Contenido', validators=[DataRequired()])
-	submit = SubmitField('Postear')
-
 
 # Form de la pagina de solicitud de reseteo de la password
 class RequestResetForm(FlaskForm):
