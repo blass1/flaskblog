@@ -14,7 +14,7 @@ def home():
 	page = request.args.get('page', 1, type=int)
 	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
 	# Le envio el html y el contido del posts
-	return render_template('home.html', posts=posts)
+	return render_template('home.html', posts=posts, title="Ultimas noticias")
 
 
 # Puede tener 2 decoradores route e ir la misma pagina
