@@ -20,7 +20,7 @@ def new_post():
 		db.session.commit()
 		flash('Tu post fue creado con exito!', 'success')
 		return redirect(url_for('main.home'))
-	return render_template('create_post.html', title='Nuevo Post', form=form,legend='Actualizar Post')
+	return render_template('create_post.html', title='Nuevo Post', form=form, legend='Nuevo post')
 
 # Con esta ruta entramos a un posteo
 # con el "int:" me aseguro que sea un entero
