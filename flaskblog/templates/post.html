@@ -1,24 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
+	<div class="row">
+		<div class="col-md-10">
+			{% if post.author == current_user %}
+				<div>
+					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Actualizar</a>
+					<!-- Para el boton delete le ponemos un modal de boostrap -->
+					<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal"> Borrar </button>
+				</div>
+			{% endif %}	
+		<h3 class="pb-4 mb-4 fst-italic border-bottom">Ignorance is bliss</h3>
 
-	<article class="media content-section">
-		<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-	  	<div class="media-body">
-	    	<div class="article-metadata">
-	      		<a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-	      		<small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
-	      		{% if post.author == current_user %}
-	      			<div>
-	      				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Actualizar</a>
-	      				<!-- Para el boton delete le ponemos un modal de boostrap -->
-	      				<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal"> Borrar </button>
-	      			</div>
-	      		{% endif %}
-	    	</div>
-	    	<h1 class="article-title">{{ post.title }}</h1>
-	    	<p class="article-content">{{ post.content }}</p>
-	  	</div>	
-	</article>
+		<article class="blog-post">
+			<h2 class="blog-post-title">{{ post.title }}</h2>
+			<div>
+			<p class="blog-post-meta">{{ post.date_posted.strftime('%d-%m-%Y') }} by <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a></p>
+			<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+			</div>
+			<p>{{ post.content }}</p>
+		</article>
+		</div>
+	</div>
 
 	<!-- Modal de boostrap que muestra un menu en pantalla cuando borramos un post-->
 	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">

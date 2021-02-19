@@ -11,46 +11,60 @@
 
     <!-- usamos la funcion url_for de flask en la aplicacion principal -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
-
+	
 	{% if title %}
 		<title>{{ title }}</title>
 	{% else %}
-		<title>Blas Solo</title>
+		<title>Evolutivo</title>
 	{% endif %}
-
+	
 </head>
 <body>
-	<header class="site-header">
-	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-	    <div class="container">
-	      <a class="navbar-brand mr-4" href="/">Blask Blog</a>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="navbar-toggler-icon"></span>
-	      </button>
-	      <div class="collapse navbar-collapse" id="navbarToggle">
-	        <div class="navbar-nav mr-auto">
-	          <a class="nav-item nav-link" href="{{ url_for('main.home')}}">Home</a>
-	          <a class="nav-item nav-link" href="{{ url_for('main.about')}}">About</a>
-	        </div>
-	        <!-- Navbar Right Side -->
-	        <div class="navbar-nav">
-	        	{% if current_user.is_authenticated %}
-	        		<a class="nav-item nav-link m-1" href="{{ url_for('posts.new_post')}}">Nuevo Post</a>
-	        		<a class="nav-item nav-link m-1" href="{{ url_for('users.account')}}">Mi cuenta</a>
-	        		<a class="nav-item nav-link m-1" href="{{ url_for('users.logout')}}">Cerrar sesion</a>
-	        	{% else %}
-		          	<a class="nav-item nav-link m-1" href="{{ url_for('users.login')}}">Iniciar sesion</a>
-		          	<a class="nav-item nav-link m-1" href="{{ url_for('users.register')}}">Registrate</a>
-		        {% endif %}
-	        </div>
-	      </div>
-	    </div>
-	  </nav>
-	</header>
+<div class="container">
+  <header class="blog-header py-3">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+      <div class="col-4 pt-1">
+        <a class="link-secondary" href="{{ url_for('main.about')}}">Nosotros</a>
+      </div>
+      <div class="col-4 text-center">
+        <h1><a class="blog-header-logo text-dark" href="{{ url_for('main.home')}}">BLOG EVOLUTIVO</a></h1>
+      </div>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        <a class="link-secondary" href="#" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
+        </a>
+		{% if current_user.is_authenticated %}
+			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('posts.new_post')}}">Nuevo Posteo</a>
+			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.account')}}">Mi cuenta</a>
+			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.logout')}}">Cerrar sesion</a>
+		{% else %}
+			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.login')}}">Ingresar</a>
+			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.register')}}">Registrate</a>
+		{% endif %}
+      </div>
+    </div>
+  </header>
+	
+  <div class="nav-scroller py-1 mb-2">
+    <nav class="nav d-flex justify-content-between">
+      <a class="p-2 link-secondary" href="{{ url_for('main.home')}}">Home</a>
+      <a class="p-2 link-secondary" href="#">Tecnologia</a>
+      <a class="p-2 link-secondary" href="#">Diseno</a>
+      <a class="p-2 link-secondary" href="#">Cultura</a>
+      <a class="p-2 link-secondary" href="#">Negocios</a>
+      <a class="p-2 link-secondary" href="#">Politica</a>
+      <a class="p-2 link-secondary" href="#">Opinion</a>
+      <a class="p-2 link-secondary" href="#">Ciencia</a>
+      <a class="p-2 link-secondary" href="#">Salud</a>
+      <a class="p-2 link-secondary" href="#">Stilo</a>
+      <a class="p-2 link-secondary" href="#">Viajes</a>
+    </nav>
+  </div>
+</div>
 
 	<main role="main" class="container">
 	  <div class="row">
-	    <div class="col-md-8">
+	    <div class="col-md-12 mt-5">
 	    	{% with messages = get_flashed_messages(with_categories=true) %}
 	    		{% if messages %}
 	    			{% for category, message in messages %}
@@ -60,24 +74,12 @@
 	    			{% endfor %}
 	    		{% endif %}
 	    	{% endwith %}
-	    	{% block content %}{% endblock %}
-	    </div>
-	    
-	    <div class="col-md-4">
-	      <div class="content-section">
-	        <h3>Our Sidebar</h3>
-	        <p class='text-muted'>Ordena los posteos.
-	          <ul class="list-group">
-			  
-	            <li class="list-group-item list-group-item-light"><a href="{{ url_for('main.home')}}">Ultimos posteos de usuarios</a></li>
-	            <li class="list-group-item list-group-item-light">Primeros posts</li>
-	            <li class="list-group-item list-group-item-light">Calendars</li>
-	            <li class="list-group-item list-group-item-light">etc</li>
-	          </ul>
-	        </p>
-	      </div>
 	    </div>
 	  </div>
+	</main>
+
+	<main class="container">
+	{% block content %}{% endblock %}
 	</main>
 	
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

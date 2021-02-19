@@ -1,18 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
 	{% for post in posts.items %}
-		<article class="media content-section">
-			<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-		  	<div class="media-body">
-		    	<div class="article-metadata">
-		      		<a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-		      		<small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
-		    	</div>
-		    	<h1><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h1>
-		    	<p class="article-content">{{ post.content }}</p>
-		  	</div>
-		</article>
+	
+	<div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+		<div class="col-md-12 px-0">
+		<h1 class="display-3 fst-italic ">{{ post.title }}</h1>
+		<small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
+		<p class="lead my-3">{{ post.content }}</p>
+		<h2 class="lead m-3"><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">Continuar leyendo...</a></h2>
+		</div>
+		<a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">Por {{ post.author.username }}</a>
+	</div>
+
 	{% endfor %}
+
 	{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 		{% if page_num %}
 			{% if posts.page == page_num %}
