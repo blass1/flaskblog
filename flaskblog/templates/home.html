@@ -6,7 +6,7 @@
 		<div class="col-md-12 px-0">
 		<h1 class="display-3 fst-italic ">{{ post.title }}</h1>
 		<small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
-		<p class="lead my-3">{{ post.content }}</p>
+		<p class="lead my-3">{{ post.content|truncate(300) }}</p>
 		<h2 class="lead m-3"><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">Continuar leyendo...</a></h2>
 		</div>
 		<a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">Por {{ post.author.username }}</a>
