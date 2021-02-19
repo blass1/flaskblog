@@ -9,13 +9,16 @@
     <!-- Bootstrap CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
+	<!-- Bootstrap Iconos -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
     <!-- usamos la funcion url_for de flask en la aplicacion principal -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 	
 	{% if title %}
 		<title>{{ title }}</title>
 	{% else %}
-		<title>Evolutivo</title>
+		<title>Evolucionar</title>
 	{% endif %}
 	
 </head>
@@ -24,7 +27,7 @@
   <header class="blog-header py-3">
     <div class="row flex-nowrap justify-content-between align-items-center">
       <div class="col-4 pt-1">
-        <a class="link-secondary" href="{{ url_for('main.about')}}">Nosotros</a>
+        <a class="link-secondary" href="{{ url_for('main.about')}}">Nosotros <i class="bi bi-info-circle"></i></a>
       </div>
       <div class="col-4 text-center">
         <h1><a class="blog-header-logo text-dark" href="{{ url_for('main.home')}}"> Evolutivo</a></h1>
@@ -34,12 +37,14 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
         </a>
 		{% if current_user.is_authenticated %}
-			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('posts.new_post')}}">Nuevo Posteo</a>
-			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.account')}}">Mi cuenta</a>
-			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.logout')}}">Cerrar sesion</a>
+			<a class="btn btn-sm btn-outline-success m-1" href="{{ url_for('posts.new_post')}}">Nuevo Post <i class="bi bi-plus-circle"></i></a>
+			
+			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.account')}}">Mi cuenta <i class="bi bi-person-circle"></i></a>
+
+			<a class="btn btn-sm btn-outline-danger m-1" href="{{ url_for('users.logout')}}">Cerrar sesion <i class="bi bi-x-circle"></i></a>
 		{% else %}
-			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.login')}}">Ingresar</a>
-			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.register')}}">Registrate</a>
+			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.login')}}"><i class="bi bi-door-open"></i> Ingresar</a>
+			<a class="btn btn-sm btn-secondary m-1" href="{{ url_for('users.register')}}"><i class="bi bi-person-plus-fill"></i> Registrate</a>
 		{% endif %}
       </div>
     </div>
@@ -53,18 +58,13 @@
       <a class="p-2 link-secondary" href="#">Cultura</a>
       <a class="p-2 link-secondary" href="#">Negocios</a>
       <a class="p-2 link-secondary" href="#">Politica</a>
-      <a class="p-2 link-secondary" href="#">Opinion</a>
-      <a class="p-2 link-secondary" href="#">Ciencia</a>
-      <a class="p-2 link-secondary" href="#">Salud</a>
-      <a class="p-2 link-secondary" href="#">Stilo</a>
-      <a class="p-2 link-secondary" href="#">Viajes</a>
     </nav>
   </div>
 </div>
 
 	<main role="main" class="container">
 	  <div class="row">
-	    <div class="col-md-12 mt-5">
+	    <div class="col-md-10 mt-2">
 	    	{% with messages = get_flashed_messages(with_categories=true) %}
 	    		{% if messages %}
 	    			{% for category, message in messages %}
@@ -76,12 +76,13 @@
 	    	{% endwith %}
 	    </div>
 	  </div>
-	</main>
-
-	<main class="container">
 	{% block content %}{% endblock %}
 	</main>
 	
+	<footer class="blog-footer">
+	<p><a href="https://www.evolutivo.com.ar">Movimiento Evolutivo</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+	</footer>
+
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

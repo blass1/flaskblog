@@ -1,29 +1,36 @@
 {% extends "layout.html" %}
 {% block content %}
 	<div class="row">
-		<div class="col-md-10">
+		<div class="col-md-8">
 			{% if post.author == current_user %}
 				<div>
 					<div class="row">
-					<small> Solo tu puedes editar y borrar los posts</small>
+						<div class="p-4 mb-3 bg-light rounded">
+						<small> Solo tú podras editar y borrar los posts.</small>
+						<div>
+						<a class="btn btn-secondary btn-sm mt-1 mb-1 " href="{{ url_for('posts.update_post', post_id=post.id) }}"><i class="bi bi-pencil-square"></i> Editar</a>
+						<!-- Para el boton delete le ponemos un modal de boostrap -->
+						<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal"><i class="bi bi-file-x"></i> Borrar </button>
+						</div>
+						</div>
 					</div>
-					<a class="btn btn-secondary btn-sm mt-1 mb-1 " href="{{ url_for('posts.update_post', post_id=post.id) }}">Editar este post</a>
-					<!-- Para el boton delete le ponemos un modal de boostrap -->
-					<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal"> Borrar </button>
+					
 				</div>
 			{% endif %}	
 		<article class="blog-post">
 			<h2 class="blog-post-title">{{ post.title }}</h2>
 			<div>
-			<p class="blog-post-meta">{{ post.date_posted.strftime('%d-%m-%Y') }} by <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a></p>
+			<p class="blog-post-meta"><i class="bi bi-calendar-date"></i> {{ post.date_posted.strftime('%d-%m-%Y') }} by <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a></p>
 			</div>
 			<p>{{ post.content }}</p>
 		</article>
 		</div>
-		<div class="col-md-2">
+		<div class="col-md-4">
+			<div class="p-4 mb-3 bg-light rounded">
+				<h4 class="fst-italic">Autor: {{ post.author.username }}</h4>
 				<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-			<div class="row">
-			<a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+				<a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}"><small>Mis aportes</small></a>
+				
 			</div>
 		</div>
 	</div>
