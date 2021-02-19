@@ -1,5 +1,5 @@
 # __Proyecto Aplicación WEB FLASK BLOG__
-## Documentado por Blas Carofile (bcarofile@gmail.com)
+## Documentado por Blas Carofile (bcarofile@gmail.com).
 En mi pronta y joven carrera como desarrollador siempre fui un convencido que el conocimiento es muy complicado de transmitir, o eso pensaba hasta que encontré las herramientas indicadas. 
 # MicroFramework FLASK (Como "DJANGO" pero más soft)
 La escalabilidad de este framework esta siendo muy refinada por los programadores y logra un buen rendimiento (utilizando el patron de diseño correcto) y velocidad en el diseño e implementacion de sistemas web no muy amplios. Todo esto se logra con una gran abstrancion de lo que implicaria un diseño de backend mas profundo en lenguajes de mas bajo nivel. Las extensiones son maravillosas ya que nos resuelven muchas, muchas horas de programacion y ya estan testeadas y probadas por toda la comunidad. 
