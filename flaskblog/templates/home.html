@@ -4,12 +4,12 @@
 	
 	<div class="p-4 p-md-4 mb-4 text-white rounded bg-dark">
 		<div class="col-md-12 px-4">
-			<h1 class="display-3 fst-italic ">{{ post.title }}</h1>
+			<h1 class="display-5 fst-italic ">{{ post.title }}</h1>
 			<small class="text-muted"><i class="bi bi-calendar-date"></i> {{ post.date_posted.strftime('%d-%m-%Y') }}</small>
 			<p class="lead my-3">{{ post.content|truncate(400) }}</p>
 			<div class="row justify-content-between">
-				<div class="col-4"><a class="btn btn-outline-light mb-4" href="{{ url_for('posts.post', post_id=post.id) }}">Continuar leyendo...</a></div>
-				<div class="col-4"><a class="btn btn-outline-info mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}"><i class="bi bi-person-circle"></i> Por: {{ post.author.username }}</a></div>
+				<div class="col-2"><a class="btn btn-outline-light mb-4" href="{{ url_for('posts.post', post_id=post.id) }}">Continuar leyendo...</a></div>
+				<div class="col-2	"><a class="btn btn-outline-info mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}"><i class="bi bi-person-circle"></i> Por: {{ post.author.username }}</a></div>
 			</div>
 		</div>
 		
