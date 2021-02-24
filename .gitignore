@@ -1,3 +1,4 @@
 # created by virtualenv automatically
 flaskblog/site.db
 flaskenv
+__pycache__
